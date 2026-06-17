@@ -1,8 +1,8 @@
 # CHOPPER
 
-A 16-step drum machine and sample slicer with a DOS-tracker style GUI.
+A 16-step drum machine and sample slicer with a url[https://en.wikipedia.org/wiki/Protracker] type gui.
 
-Loads a WAV file, detects transients, slices the audio, and lets you arrange those slices into a 16-step pattern — triggering pads, adjusting pitch per step, and recording in real time.
+Loads a WAV file, detects transients, slices the audio, and lets you arrange those slices into a 16-step pattern triggering pads, adjusting pitch per step, and recording in real time.
 
 ---
 
