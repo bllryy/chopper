@@ -1,0 +1,14 @@
+[package]
+name = "chopper"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+cpal = "0.18.1"
+hound = "3.5.1"
+rtrb = "0.3.4"
+eframe = "0.29"
+rfd = "0.14"
+
+[profile.release]
+opt-level = 3
