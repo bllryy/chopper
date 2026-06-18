@@ -9,8 +9,12 @@ use eframe::egui;
 use engine::{Cmd, Engine, SharedState};
 use util::{load_wav, slice_transient, synth_break};
 
+/*
+Meow meow moew meow meow 
+*/
+
 fn main() -> eframe::Result<()> {
-    // ── Audio setup ───────────────────────────────────────────────────────
+    // Audio setup
     let host = cpal::default_host();
     let device = host.default_output_device().expect("no output device");
     let config = device.default_output_config().expect("no default config");
@@ -73,7 +77,7 @@ fn main() -> eframe::Result<()> {
         .expect("build stream");
     stream.play().expect("play");
 
-    // ── GUI ───────────────────────────────────────────────────────────────
+    // GUI
     let native_options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
             .with_title("CHOPPER")
