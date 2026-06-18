@@ -8,7 +8,7 @@ use egui::{Align2, Color32, FontId, Margin, Pos2, Rect, Rounding, Sense, Shadow,
 use crate::engine::{Cmd, Note, SharedState};
 use crate::util::{load_wav, slice_transient};
 
-// ── DOS light-mode palette (Windows 3.1 / MS-DOS silver) ─────────────────────
+// DOS light-mode palette (Windows 3.1 / MS-DOS silver is what we are going for)
 
 const BG: Color32 = Color32::from_rgb(160, 160, 160);      // screen background, slightly darker silver
 const PANEL: Color32 = Color32::from_rgb(192, 192, 192);   // classic Windows 3.1 silver
@@ -41,7 +41,7 @@ const VU_OFF: Color32 = Color32::from_rgb(170, 170, 170);
 
 const WAVE_PTS: usize = 2048;
 
-// ── Text / font helpers ───────────────────────────────────────────────────────
+// Text / font helpers
 
 const FONT_SM: f32 = 9.5;
 const FONT_MD: f32 = 10.5;
@@ -61,15 +61,15 @@ fn txt_md_center(p: &egui::Painter, s: &str, rect: Rect, col: Color32) {
     p.text(rect.center(), Align2::CENTER_CENTER, s, fnt_md(), col);
 }
 
-// ── DOS UI primitives ─────────────────────────────────────────────────────────
+// DOS UI primitives
 
-/// Filled rect with hard pixel border.
+/// Filled rect with hard pixel border
 fn dos_rect(p: &egui::Painter, rect: Rect, fill: Color32, border: Color32) {
     p.rect_filled(rect, Rounding::ZERO, fill);
     p.rect_stroke(rect, Rounding::ZERO, Stroke::new(1.0_f32, border));
 }
 
-/// Classic DOS "raised" border — white top/left, gray bottom/right.
+/// white top/left, gray bottom/right
 fn raised(p: &egui::Painter, rect: Rect) {
     // outer highlight
     p.line_segment([rect.left_top(), Pos2::new(rect.right() - 1.0, rect.top())], Stroke::new(1.0_f32, BORDER_HI));
@@ -79,7 +79,7 @@ fn raised(p: &egui::Painter, rect: Rect) {
     p.line_segment([Pos2::new(rect.right(), rect.top()), rect.right_bottom()], Stroke::new(1.0_f32, BORDER_LO));
 }
 
-/// Pressed (inset) border — dark top/left, white bottom/right.
+/// dark top/left, white bottom/right.
 fn pressed(p: &egui::Painter, rect: Rect) {
     p.line_segment([rect.left_top(), Pos2::new(rect.right() - 1.0, rect.top())], Stroke::new(1.0_f32, BORDER_LO));
     p.line_segment([rect.left_top(), Pos2::new(rect.left(), rect.bottom() - 1.0)], Stroke::new(1.0_f32, BORDER_LO));
@@ -87,7 +87,7 @@ fn pressed(p: &egui::Painter, rect: Rect) {
     p.line_segment([Pos2::new(rect.right(), rect.top()), rect.right_bottom()], Stroke::new(1.0_f32, BORDER_HI));
 }
 
-/// Blue header bar — navy fill, white text, bright-blue top/left border.
+/// navy fill, white text, bright-blue top/left border.
 fn header_bar(p: &egui::Painter, rect: Rect, label: &str) {
     p.rect_filled(rect, Rounding::ZERO, HDR_BG);
     p.line_segment([rect.left_top(), Pos2::new(rect.right(), rect.top())], Stroke::new(1.0_f32, HDR_BG_LT));
@@ -95,7 +95,7 @@ fn header_bar(p: &egui::Painter, rect: Rect, label: &str) {
     txt_md_center(p, label, rect, TEXT_HDR);
 }
 
-/// Button: raised silver, black text. Returns true if clicked.
+/// Button: raised silver, black text. true if clicked.
 fn dos_btn(ui: &mut egui::Ui, label: &str, w: f32, h: f32) -> bool {
     dos_btn_col(ui, label, w, h, PANEL2, TEXT)
 }
@@ -109,8 +109,6 @@ fn dos_btn_col(ui: &mut egui::Ui, label: &str, w: f32, h: f32, fill: Color32, tc
     txt_center(ui.painter(), label, rect, tcol);
     resp.clicked()
 }
-
-// ── App struct ────────────────────────────────────────────────────────────────
 
 pub struct ChopperApp {
     pub tx: rtrb::Producer<Cmd>,
@@ -197,7 +195,7 @@ fn note_name(semis: i8) -> String {
     format!("{}{:+}", names[semis.rem_euclid(12) as usize], semis / 12)
 }
 
-// ── Style ─────────────────────────────────────────────────────────────────────
+// Style
 
 fn setup_style(ctx: &egui::Context) {
     let mut vis = egui::Visuals::light();
@@ -231,7 +229,7 @@ fn setup_style(ctx: &egui::Context) {
     ctx.set_style(sty);
 }
 
-// ── eframe::App ───────────────────────────────────────────────────────────────
+// eframe::App
 
 impl eframe::App for ChopperApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
@@ -307,7 +305,7 @@ impl eframe::App for ChopperApp {
     }
 }
 
-// ── Title bar ─────────────────────────────────────────────────────────────────
+// Title bar
 
 impl ChopperApp {
     fn draw_title_bar(&mut self, ui: &mut egui::Ui, vu: f32) {
@@ -414,7 +412,7 @@ impl ChopperApp {
         });
     }
 
-// ── Waveform panel ────────────────────────────────────────────────────────────
+// Waveform panel
 
     fn draw_waveform(&mut self, ui: &mut egui::Ui, cur_step: usize, pattern: &[Option<Note>; 16]) {
         let avail = ui.available_size();
@@ -490,7 +488,7 @@ impl ChopperApp {
             Pos2::new(foot.left() + 3.0, foot.top() + 1.5), TEXT_DIM);
     }
 
-// ── Pattern editor ────────────────────────────────────────────────────────────
+// Pattern editor
 
     fn draw_pattern(&mut self, ui: &mut egui::Ui, pattern: &[Option<Note>; 16], cur_step: usize) {
         let avail = ui.available_size();
@@ -591,8 +589,6 @@ impl ChopperApp {
         txt(p, " LMB=TOGGLE  RMB=DEL  SCROLL=PITCH", Pos2::new(fr.left() + 3.0, fr.top() + 1.5), TEXT_DIM);
     }
 
-// ── Pads ──────────────────────────────────────────────────────────────────────
-
     fn draw_pads(&mut self, ui: &mut egui::Ui) {
         let avail = ui.available_size();
         let h = avail.y.min(115.0);
@@ -659,8 +655,6 @@ impl ChopperApp {
             }
         }
     }
-
-// ── Keyboard handling ─────────────────────────────────────────────────────────
 
     fn handle_keys(&mut self, ctx: &egui::Context) {
         use egui::Key;
